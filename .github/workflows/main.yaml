@@ -1,19 +1,19 @@
-# Your workflow name.
 name: Deploy to Render
 
-# Run workflow on every push to main branch.
 on:
   push:
     branches: [ main ]
 
-# Your workflow jobs.
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      # Check out your repository.
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Trigger Render Deploy
+        run: |
+          curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
 
       # Build, Push and Deploy Docker container to Render.
       - name: Build, Push and Release a Docker container to Render
