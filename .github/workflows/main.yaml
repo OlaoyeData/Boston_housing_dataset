@@ -14,23 +14,3 @@ jobs:
       - name: Trigger Render Deploy
         run: |
           curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
-
-      # Build, Push and Deploy Docker container to Render.
-      - name: Build, Push and Release a Docker container to Render
-        uses: render-examples/docker-deploy-to-render@main
-        with:
-          # Your Render API key (stored as a GitHub secret).
-          render_api_key: ${{ secrets.RENDER_API_KEY }}
-
-          # The ID of your Render service (e.g. srv-xxxxxxxxxxxx).
-          render_service_id: ${{ secrets.RENDER_SERVICE_ID }}
-
-          # Path to your Dockerfile.
-          dockerfile_path: ./
-
-          # Name of your Dockerfile.
-          dockerfile_name: Dockerfile
-
-          docker_options: "--no-cache"
-
-          process_type: web
