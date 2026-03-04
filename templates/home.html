@@ -1,1 +1,342 @@
-<h1>Hello world</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML API</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<style>
+        /* ── Reset & Base ── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg:        #0b0f1a;
+            --surface:   #111827;
+            --border:    #1e2d45;
+            --accent:    #3b82f6;
+            --accent2:   #06b6d4;
+            --text:      #e2e8f0;
+            --muted:     #64748b;
+            --input-bg:  #0d1526;
+            --success:   #10b981;
+            --radius:    10px;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'DM Mono', monospace;
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            background-image:
+                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(59,130,246,0.15), transparent),
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 39px,
+                    rgba(30,45,69,0.4) 39px,
+                    rgba(30,45,69,0.4) 40px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 39px,
+                    rgba(30,45,69,0.4) 39px,
+                    rgba(30,45,69,0.4) 40px
+                );
+        }
+
+        /* ── Card ── */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem 2.5rem 2rem;
+            width: 100%;
+            max-width: 720px;
+            box-shadow:
+                0 0 0 1px rgba(59,130,246,0.08),
+                0 24px 64px rgba(0,0,0,0.5),
+                0 0 80px rgba(59,130,246,0.06);
+            animation: fadeUp 0.5s ease both;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Header ── */
+        .header {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .badge {
+            display: inline-block;
+            font-size: 0.65rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent2);
+            background: rgba(6,182,212,0.1);
+            border: 1px solid rgba(6,182,212,0.25);
+            border-radius: 99px;
+            padding: 0.25rem 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 800;
+            line-height: 1.15;
+            background: linear-gradient(120deg, #e2e8f0 30%, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            margin-top: 0.4rem;
+            font-size: 0.78rem;
+            color: var(--muted);
+            letter-spacing: 0.03em;
+        }
+
+        /* ── Grid ── */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        /* ── Field ── */
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        label {
+            font-size: 0.68rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        .field-hint {
+            font-size: 0.6rem;
+            color: #3b5070;
+            letter-spacing: 0.04em;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 0.6rem 0.85rem;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.82rem;
+            color: var(--text);
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+        }
+
+        input[type="text"]::placeholder {
+            color: #2a3a55;
+        }
+
+        /* ── Submit ── */
+        .submit-row {
+            margin-top: 1.75rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        button[type="submit"] {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: #fff;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+            border: none;
+            border-radius: var(--radius);
+            padding: 0.75rem 2rem;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+            box-shadow: 0 4px 20px rgba(59,130,246,0.35);
+        }
+
+        button[type="submit"]:hover {
+            opacity: 0.92;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 28px rgba(59,130,246,0.45);
+        }
+
+        button[type="submit"]:active {
+            transform: translateY(0);
+        }
+
+        /* ── Prediction Result ── */
+        .prediction-text {
+            margin-top: 1.5rem;
+            padding: 1rem 1.25rem;
+            background: rgba(16,185,129,0.08);
+            border: 1px solid rgba(16,185,129,0.25);
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+            color: var(--success);
+        }
+
+        .prediction-text:not(:empty) { display: block; }
+
+        /* ── Footer ── */
+        .footer {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.65rem;
+            color: #2a3a55;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 540px) {
+            .card { padding: 1.75rem 1.25rem 1.5rem; }
+            .form-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 360px) {
+            .form-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="header">
+            <span class="badge">ML Regression Model</span>
+            <h1>Boston House<br>Price Prediction</h1>
+            <p class="subtitle">Enter the 13 feature values below to get an estimated median house price.</p>
+        </div>
+
+        <form action="{{ url_for('predict') }}" method="post">
+            <div class="form-grid">
+
+                <div class="field">
+                    <label for="CRIM">CRIM</label>
+                    <span class="field-hint">Per capita crime rate</span>
+                    <input type="text" id="CRIM" name="CRIM" placeholder="e.g. 0.00632" required />
+                </div>
+
+                <div class="field">
+                    <label for="ZN">ZN</label>
+                    <span class="field-hint">Residential land zone %</span>
+                    <input type="text" id="ZN" name="ZN" placeholder="e.g. 18.0" required />
+                </div>
+
+                <div class="field">
+                    <label for="INDUS">INDUS</label>
+                    <span class="field-hint">Non-retail business acres</span>
+                    <input type="text" id="INDUS" name="INDUS" placeholder="e.g. 2.31" required />
+                </div>
+
+                <div class="field">
+                    <label for="CHAS">CHAS</label>
+                    <span class="field-hint">Charles River (0 or 1)</span>
+                    <input type="text" id="CHAS" name="CHAS" placeholder="0 or 1" required />
+                </div>
+
+                <div class="field">
+                    <label for="NOX">NOX</label>
+                    <span class="field-hint">Nitric oxide conc.</span>
+                    <input type="text" id="NOX" name="NOX" placeholder="e.g. 0.538" required />
+                </div>
+
+                <div class="field">
+                    <label for="RM">RM</label>
+                    <span class="field-hint">Avg rooms per dwelling</span>
+                    <input type="text" id="RM" name="RM" placeholder="e.g. 6.575" required />
+                </div>
+
+                <div class="field">
+                    <label for="AGE">AGE</label>
+                    <span class="field-hint">Pre-1940 units built %</span>
+                    <input type="text" id="AGE" name="AGE" placeholder="e.g. 65.2" required />
+                </div>
+
+                <div class="field">
+                    <label for="DIS">DIS</label>
+                    <span class="field-hint">Distance to job centres</span>
+                    <input type="text" id="DIS" name="DIS" placeholder="e.g. 4.09" required />
+                </div>
+
+                <div class="field">
+                    <label for="RAD">RAD</label>
+                    <span class="field-hint">Highway accessibility</span>
+                    <input type="text" id="RAD" name="RAD" placeholder="e.g. 1" required />
+                </div>
+
+                <div class="field">
+                    <label for="TAX">TAX</label>
+                    <span class="field-hint">Property tax rate/$10k</span>
+                    <input type="text" id="TAX" name="TAX" placeholder="e.g. 296" required />
+                </div>
+
+                <div class="field">
+                    <label for="PTRATIO">PTRATIO</label>
+                    <span class="field-hint">Pupil-teacher ratio</span>
+                    <input type="text" id="PTRATIO" name="PTRATIO" placeholder="e.g. 15.3" required />
+                </div>
+
+                <div class="field">
+                    <label for="B">B</label>
+                    <span class="field-hint">1000(Bk−0.63)²</span>
+                    <input type="text" id="B" name="B" placeholder="e.g. 396.9" required />
+                </div>
+
+                <div class="field">
+                    <label for="LSTAT">LSTAT</label>
+                    <span class="field-hint">% lower-status population</span>
+                    <input type="text" id="LSTAT" name="LSTAT" placeholder="e.g. 4.98" required />
+                </div>
+
+            </div>
+
+            <div class="submit-row">
+                <button type="submit">Predict Price</button>
+            </div>
+        </form>
+
+        {% if prediction_text %}
+        <div class="prediction-text">
+            {{ prediction_text }}
+        </div>
+        {% endif %}
+
+        <div class="footer">Boston Housing Dataset &nbsp;·&nbsp; Powered by Flask &amp; Scikit-learn</div>
+    </div>
+
+</body>
